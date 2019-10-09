@@ -13,21 +13,9 @@ func main() {
         flag.Parse()
         args := flag.Args() 
         
-        length := len(args)
-        c := make(chan int)
-        
         start := time.Now()	
         for _, file := range args{
-               go frequency(file, c)
-        }
-
-        count := 0
-        for{
-            a:= <-c
-            count+=a
-            if count == length{
-                break
-            }
+               frequency(file)
         }
 
         elapsed := time.Since(start)
@@ -36,7 +24,7 @@ func main() {
         fmt.Println("End of main")
 }
 
-func frequency(fileName string, c chan int){ 
+func frequency(fileName string){ 
         file, err := os.Open(fileName)
         if err != nil {
                panic(err) 
@@ -54,11 +42,9 @@ func frequency(fileName string, c chan int){
                 countMap[s]+= 1            
         }
 
-       // for key, value := range countMap {
-       //         fmt.Println("key:", key, " value:", value)
-       // }
-
-        c<-1
+        //for key, value := range countMap {
+        //        fmt.Println("key:", key, " value:", value)
+        //}
 
         fmt.Println("****end of frequency****")
 }
